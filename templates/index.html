@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+</head>
+<style>
+    .typed-cursor{
+        display: none;
+    }
+    center .auto img{
+        width: 400px;
+        height: 400px;
+    }
+</style>
+
+
+<body>
+<header style="padding: 15px 5% 5px 5%;" class="bg-dark d-flex justify-content-between  align-items-center ">
+<h4 style="width: fit-content;" class="d-flex align-items-center p-2 bg-primary">
+    <span class="text-danger">B</span>
+    <span class="text-warning">o</span>
+    <span class="text-warning">o</span>
+    <span class="text-white">k</span>
+</h4>
+
+
+<a href="/card" style="position: relative;" class="btn btn-primary">Shop <p style="position: absolute; top: -20px; right: -15px; background-color: red; width: 30px; height: 30px; border-radius: 50px; display: flex;justify-content: center; align-items: center; " id="countershop"></p></a>
+</header>
+
+<center class="my-4">
+<h1  style=" border-bottom: 5px dotted #007bff; color: #007bff; width: fit-content; padding: 5px 5px 10px 5px; text-shadow:  4px 4px 11px rgba(0, 0, 0, 0.841);" class="auto">  </h1>
+<br>
+
+
+<div class="d-flex  justify-content-center my-4">
+<select  onchange="location.href =  `/?q=${this.value}` " style="width: fit-content;" class="form-control">
+<option  value="" selected >All</option>
+
+{% for r in data2 %}
+{% if q == r.title %}
+<option  value="{{r}}" selected >{{r}}</option>
+{% else %}
+<option  value="{{r}}">{{r}}</option>
+{% endif %}
+    
+ 
+
+{% endfor %}
+</select>
+<input id="input_item" style="width: 300px;" type="search"  class="form-control">
+
+</div>
+
+<center id="alerttext">
+</center>
+
+{% if data1|length == 0 %}
+<center>
+<h3><span class="text-primary">{{q}}</span> da kitob mavjud emas</h3>
+</center>
+{% endif %}
+    
+
+
+<div id="cards_list" style="gap: 8px; flex-wrap: wrap;" class="w-100 d-flex justify-content-center ">
+{% for i in data1 %}
+<div id="card{{i.id}}" title="{{i.title}}">
+<div  class="bg-danger card d-flex flex-column align-items-start justify-content-center" style="width:260px;">
+    <center class="w-100 py-1"><img class="" style="object-fit: contain; width: 250px; height: 250px;" src="/media/{{i.img}}" alt=""> </center>
+    <ul class="list-group-flush mb-0 px-1 w-100">
+    <h5 style="height: 50px; display: flex;justify-content: center ; align-items: center;" class="card-subtitle bg-warning my-2">{{i.title}}</h5>
+    <li class="list-group-item-action text-left d-flex my-1"> <span style="border-radius: 0;" class=" btn btn-primary text-left  py-1 px-2 ">Price</span> <span style="border-radius: 0;" class="w-100 btn btn-warning text-left">{{i.price}}</span></li>
+    <li class="list-group-item-action text-left d-flex my-1"> <span style="border-radius: 0;" class=" btn btn-primary text-left  py-1 px-2 ">Category</span> <span style="border-radius: 0;" class="w-100 btn btn-warning text-left">{{i.categ}}</span></li>
+    <li class="list-group-item-action text-left d-flex my-1"> <span style="border-radius: 0;" class=" btn btn-primary text-left  py-1 px-2 ">Page</span> <span style="border-radius: 0;" class="w-100 btn btn-warning text-left">{{i.page}}</span></li>
+    </ul>
+    <div id="btn{{i.id}}">
+    <button   onclick="name1(this), this.parentElement.innerHTML = `<button class='btn btn-danger'>Buyying</button>` , localStorage.setItem('g',g), localStorage.setItem('b',b) " title="|dfhhdhdjhsrfhdfjfgsddf|{{i.title}}|||||||||||||||||||||{{i.price}}|||||||||||||||||||||{{i.page}}|||||||||||||||||||||{{i.img}}" class="btn btn-warning w-100">Buy </button>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+
+
+
+</div>
+
+</center>
+
+
+
+<script src="/static/typed.js"></script>
+<script>
+
+
+
+var typed = new Typed(".auto", {
+    strings: [
+        `Kitob larni tanlang`,
+        `Buyurtma bering Va sotib oling`,
+        `Va kitobni Oqing`,
+
+    ],
+   typeSpeed:60,
+  backSpeed:30,
+  backDelay:5500,
+  loop:true
+})
+
+'{% for i in data1 %}'
+document.getElementById('input_item').addEventListener("input",()=>{
+
+if(document.getElementById('card{{i.id}}').title.toString().includes(document.getElementById('input_item').value )  || document.getElementById('card{{i.id}}').title.toString().toLocaleUpperCase().includes(document.getElementById('input_item').value ) ){
+document.getElementById('card{{i.id}}').style.display = 'block'
+
+}else{
+document.getElementById('card{{i.id}}').style.display = 'none'
+
+}
+
+
+})
+'{% endfor %}'
+
+document.getElementById('input_item').addEventListener("input",()=>{
+var b = []
+for (const iterator of document.getElementById('cards_list').children) {
+if( iterator.style.display == 'none'){
+b.push('none')
+}
+else{
+b.push('block')
+
+}
+
+let g = b.every((value, index, array) => {return value == 'none'})
+if(g){
+    alerttext
+    document.getElementById('alerttext').innerHTML = `<h3>Kitob topilmadi</h3>`
+}else{
+    console.log('block')
+    document.getElementById('alerttext').innerHTML = ``
+
+
+}
+
+}
+})
+
+
+
+
+
+
+
+
+let counter = 0
+
+let b = ''
+let g = ''
+let grupitm = ''
+
+function name1(params) {
+    console.log(g,'g');
+    g+=`${params.parentElement.id},`
+    b+=params.title
+}
+
+if (localStorage.getItem('b') == ( '' || null)) {
+
+}
+else{
+    b = localStorage.getItem('b')
+    b.split('|dfhhdhdjhsrfhdfjfgsddf|').forEach(element => {
+        element = element.split('|||||||||||||||||||||')
+        if(element.length > 1){
+            console.log(element)
+        }else{
+
+        }
+        
+
+    });
+}
+
+
+setInterval(() => {
+document.getElementById('countershop').innerHTML = g.split(',').length-1
+}, 50);
+if (localStorage.getItem('g') ==( '' || null)) {
+}
+else{
+g= localStorage.getItem('g')
+grupitm = localStorage.getItem('g').split(',')
+grupitm.forEach(element => {
+document.getElementById(element).innerHTML =     `<button class="btn btn-danger">Buyying </button>`
+console.log(element)
+});
+
+
+
+
+}
+
+
+
+
+
+
+
+ 
+
+
+</script>
+
+
+
+
+</body>
+</html>

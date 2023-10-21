@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+
+</head>
+<body>
+<header style="padding: 15px 5% 5px 5%;" class="bg-dark d-flex justify-content-center  align-items-center ">
+        <h4  style="width: fit-content;" class="d-flex align-items-center p-2 bg-primary">
+            <span class="text-danger">B</span>
+            <span class="text-warning">o</span>
+            <span class="text-warning">o</span>
+            <span class="text-white">k</span>
+        </h4>
+        
+</header>
+    
+
+<div class="container">
+    <div id="row" class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width: 150px; height: 50px;" scope="col">Name</th>
+              <th style="width: 100px; height: 50px;" scope="col">Img</th>
+              <th style="width: 100px; height: 50px;" scope="col">Price</th>
+              <th style="width: 100px; height: 50px;" scope="col">Page</th>
+            </tr>
+          </thead>
+
+          <tbody id="data">
+
+          </tbody>
+        </table>
+
+<center>
+<div> <h2>Total price : <span id="ttp"></span></h2></div>
+<form action="">
+<input id="ppn1" required class="form-control my-1" style="width: 250px !important;" type="text" placeholder="Ismingiz">
+<input id="ppn2" required class="form-control my-1" style="width: 250px !important;" type="number" placeholder="Nomeringiz">
+<input id="ffin" class="btn btn-warning" type="submit">
+</form>
+
+</center>
+
+      </div>
+    </div>
+</div>
+
+
+
+<script>
+
+let b =''
+if (localStorage.getItem('b') == null ) {
+document.getElementById('row').innerHTML = '<center class="my-3 d-flex justify-content-center align-items-center " style="gap: 10px; flex-wrap: wrap;"><h1>Kitob mavjud emas</h1> <a href="/" class="btn btn-warning">Orqaga qaytish</a> </center>'
+}
+else{
+
+b = localStorage.getItem('b')
+b.split('|dfhhdhdjhsrfhdfjfgsddf|').forEach(element => {
+        element = element.split('|||||||||||||||||||||')
+        if(element.length > 1){
+let tr = document.createElement("tr")
+
+
+tr.innerHTML = `
+<td>${element[0]}</td>
+<td><center><img width="50" height="50" title="/media/${element[3]}" src="/media/${element[3]}" alt=""></center> </td>
+<td class="d-flex flex-column align-items-center"><input type="number" value="1" oninput=" if(this.value > 20){this.value = 20}else if(this.value < 0){ this.value =0} else{} this.parentElement.children[1].innerHTML = ${element[1]} * this.value +'$' ;" style="width: 60px;" class="form-control"> <span id="id">${element[1]}$</span> </td>
+<td >
+  <p style="display: flex; justify-content: center; align-items: center;"> ${element[2]} page </p>
+</td>
+`
+document.getElementById('data').prepend(
+tr
+)
+        }
+else{
+}
+        
+
+    });
+
+
+addEventListener("input",()=>{
+let pr = 0
+    for (const iterator of document.getElementById('data').children) {
+        console.log(iterator.children[2].children[1].innerHTML.split("$")[0] )
+        pr +=Number( iterator.children[2].children[1].innerHTML.split("$")[0])
+
+    }
+document.getElementById('ttp').innerHTML= pr
+
+})
+
+
+
+document.getElementById('ffin').addEventListener("click",(e)=>{
+  e.preventDefault()
+let pr = 0
+let value1 = ''
+for (const iterator of document.getElementById('data').children) {
+
+pr +=Number( iterator.children[2].children[1].innerHTML.split("$")[0])
+document.getElementById('ttp').innerHTML = pr
+
+value1 += `%0A▪️▪️▪️▪️▪️▪️▪️▪️▪️▪%0A ${iterator.children[2].children[0].value}-ta Kitob:(${iterator.children[0].innerHTML})  ${iterator.children[2].children[1].innerHTML.split("$")[0]}$  %0A  ${iterator.children[1].children[0].children[0].src }`
+}
+
+if (document.getElementById('ppn1').value.length > 5 && document.getElementById('ppn2').value.length > 5 ) {
+let mytext = `Total: ${pr}$ ${value1} %0A Ism : ${document.getElementById('ppn1').value} %0A Number : ${document.getElementById('ppn2').value}`
+let token = '6192191641:AAGfWZQF5A6MiSJluYLSvarDKbm-s8rhyX4' 
+let chat_id = -1001694873308
+let url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${mytext}`
+let api = new XMLHttpRequest();
+api.open("GET", url, true)
+api.send()
+document.getElementById('ppn1').value  =''
+document.getElementById('ppn2').value  =''
+localStorage.clear()
+location.reload()
+alert('Ushbu zakaslar @dasturlash_web_sayt wu manzilga boradi')
+}else{
+  alert("ism 5 ta harifdan kop boliwi kerak va nomeringizni toliq kiriting Namuna:998916030279")
+
+}
+
+
+
+
+
+})
+
+
+addEventListener("sumbit",(e)=>{
+  e.preventDefault()
+
+})
+
+
+
+addEventListener("click",()=>{
+let pr = 0
+for (const iterator of document.getElementById('data').children) {
+pr +=Number( iterator.children[2].children[1].innerHTML.split("$")[0])
+document.getElementById('ttp').innerHTML = pr
+}
+
+})
+
+
+
+
+let pr = 0
+  for (const iterator of document.getElementById('data').children) {
+        console.log(iterator.children[2].children[1].innerHTML.split("$")[0] )
+        pr +=Number( iterator.children[2].children[1].innerHTML.split("$")[0])
+
+}
+document.getElementById('ttp').innerHTML= pr
+
+
+
+
+
+
+}
+
+</script>
+    
+</body>
+</html>
